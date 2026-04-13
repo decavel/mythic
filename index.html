@@ -492,10 +492,75 @@
   .footer-links a { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
   .footer-links a:hover { color: var(--gold); }
 
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 101;
+  }
+  .hamburger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .hamburger.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 52px;
+    left: 0;
+    right: 0;
+    background: rgba(253,246,236,0.97);
+    backdrop-filter: blur(12px);
+    padding: 16px 20px 24px;
+    flex-direction: column;
+    z-index: 99;
+    border-bottom: 1.5px solid rgba(245,166,35,0.2);
+    animation: menuSlide 0.2s ease;
+  }
+  .mobile-menu.open {
+    display: flex;
+  }
+  .mobile-menu a {
+    display: block;
+    padding: 14px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(26,16,53,0.06);
+  }
+  .mobile-menu a:last-child {
+    border-bottom: none;
+    color: var(--amber);
+  }
+  @keyframes menuSlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     nav { padding: 14px 20px; }
     nav ul { display: none; }
+    .hamburger { display: flex; }
     section { padding: 72px 24px; }
     .hero { padding: 100px 24px 60px; }
     .features-kids .inner,
@@ -522,7 +587,18 @@
     <li><a href="#how">How it works</a></li>
     <li><a href="#signup" class="nav-cta">Get early access</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#for-kids">For Kids</a>
+  <a href="#for-parents">For Parents</a>
+  <a href="#how">How it works</a>
+  <a href="#signup">Get early access</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -874,6 +950,18 @@
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(el);
+  });
+</script>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.addEventListener('click', function() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
   });
 </script>
 </body>
